@@ -1,0 +1,7 @@
+check process knxd with pidfile {{knxd_pid_file}}
+  group smarthome
+  start program = "/usr/sbin/service knxd start"
+  stop program  = "/usr/sbin/service knxd stop"
+  if 2 restarts within 4 cycles then alert
+  if 4 restarts within 12 cycles then timeout
+  if memory usage > 20 MB then restart

@@ -1,0 +1,77 @@
+---
+
+# compile from github sources?
+knxd_source_compile: false
+# version to checkout from git and compile package for, can be either a tag or branch name
+# e.g. "DEBIAN-0.14.27-2", "v0.14.25", ...
+knxd_source_version: "v0.14.25"
+
+# install 'monit' template for monitoring (http://www.tildeslash.com/monit)
+# 'monit' package from debian must already be installed
+# monit uses the knxd_pid_file param too!
+knxd_use_monit: false
+
+# install knxd-dev debian package or debug symbols too? defaults to false
+knxd_install_dev_package: false
+knxd_install_debug_package: false
+
+# either use default knxd ini file provided with this role and set all
+# knxd_arg_ config parameters below accordingly or provide your own
+# path to knxd.ini file
+knxd_config_file: "templates/knxd.ini"
+
+# path to pid file (param -p)
+# this is used by monit template and knxd.ini template
+knxd_pid_file: "/var/run/knxd.pid"
+
+# config parameter used in default ini template
+#
+# param -b
+knxd_arg_driver: "ipt"
+# this is the ip address or broadcast address depending on driver used (ip|ipt)
+knxd_arg_ipgw: "192.168.1.8"
+# EIB address (param -e)
+knxd_arg_eib_addr: "0.0.1"
+# EIB client addresses (param -E)
+knxd_arg_eib_client_addr: "0.0.2:8"
+# path to local listener socket
+knxd_arg_local_socket: "/tmp/eib"
+# path to local tcp port listener
+knxd_arg_local_port: 6270
+
+# knxd connection string depends on local socket and port configured
+knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}D.ipt"
+#
+# end knxd.ini template vars
+#
+
+# these are the tools needed to compile the source code
+knxd_build_tools:
+  - git-core
+  - build-essential
+  - debhelper
+  - autotools-dev
+  - autoconf
+  - automake
+  - libtool
+  - pkg-config
+  - dh-systemd
+
+# these are the libraries needed for knxd 0.14.25...
+# libsystemd-daemon-dev not needed on debian since stretch anymore
+# will be remove via task if necessary
+knxd_build_libs_dev:
+  - libusb-1.0-0-dev
+  - libsystemd-dev
+  - libsystemd-daemon-dev
+  - libev-dev
+  - cmake
+  # - basefiles
+  # - libfmt-dev
+  # - libfmt3-dev
+
+
+#### DEBUG ####
+# do all steps EXCEPT running dpkg-buildpackage to actually build the packages
+# for debug
+knxd_skip_package_build: false

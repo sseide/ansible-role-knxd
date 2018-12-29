@@ -1,0 +1,57 @@
+---
+# tasks to download specific version from git and compile/build debian packages for installation
+
+- name: "set_fact: remove unneeded build deps for newer debian releases"
+  set_fact:
+    knxd_build_libs_dev: "{{ knxd_build_libs_dev | reject('equalto', 'libsystemd-daemon-dev') | list }}"
+  when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('9.0', '>='))
+
+
+- name: "Install build tools prerequisites"
+  apt:
+    name: "{{knxd_build_tools}}"
+
+- name: "Install build library prerequisites"
+  apt:
+    name: "{{knxd_build_libs_dev}}"
+
+- name: "Clone source into /usr/src"
+  git:
+    clone: true
+    repo: "https://github.com/knxd/knxd.git"
+    dest: "/usr/src/knxd"
+    version: "{{knxd_source_version}}"
+
+- name: "Build debian packages from source"
+  command: "dpkg-buildpackage -b -uc"
+  args:
+    chdir: "/usr/src/knxd"
+  when: not knxd_skip_package_build
+
+# install local build packages
+- name: "Find newly build packages"
+  find:
+    path: "/usr/src"
+    pattern: "knxd*.deb"
+    recurse: false
+  register: knxd_find_debs
+
+- name: "Create package list for installation"
+  set_fact:
+    knxd_deb_list: "{{ knxd_find_debs.files | map(attribute='path') | list }}"
+
+- name: "Check if dev package shall be installed too"
+  set_fact:
+    knxd_deb_list: "{{ knxd_deb_list | reject('regex', 'knxd-dev.*') | list }}"
+  when: not knxd_install_dev_package
+
+- name: "Check if debug packages shall be installed too"
+  set_fact:
+    knxd_deb_list: "{{ knxd_deb_list | reject('regex', 'knxd-.*dbgsym.*') | list }}"
+  when: not knxd_install_debug_package
+
+- name: "Install new knxd packages"
+  apt:
+    deb: "{{item}}"
+    state: present
+  with_items: "{{knxd_deb_list}}"

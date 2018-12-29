@@ -1,0 +1,10 @@
+---
+- name: Restart knxd
+  service:
+    name: knxd
+    state: restarted
+
+- name: Reload monit
+  service:
+    name: monit
+    state: reload

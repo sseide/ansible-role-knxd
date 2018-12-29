@@ -1,0 +1,6 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: sseide.knxd
+      knxd_source_compile: true
