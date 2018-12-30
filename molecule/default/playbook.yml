@@ -5,3 +5,7 @@
     - role: sseide.knxd
       knxd_source_compile: true
       knxd_arg_driver: ""
+      # knxd_skip_package_build: true
+      knxd_arg_drivers:
+        - driver: "dummy"
+        - driver: "ip"
