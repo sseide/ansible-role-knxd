@@ -6,8 +6,10 @@ or by compiling the source code from git repo to build new debian packages.
 
 KNXD source code can be found at https://github.com/knxd/knxd
 
-This role creates a knxd.ini file for usage with an external KNX IP-Interface or IP-Router. 
-For using KNXD with a USB-to-KNX Interface or other usages you should use your own knxd.ini template file 
+This role creates a knxd.ini file for usage with external KNX IP-Interfaces, IP-Routers
+or TPUART devices.
+ 
+For using KNXD with a `USB` driver or other usages you should use your own knxd.ini template file 
 and not the one provided with this role. In this case just set the
 `knxd_config_file` variable to your own template.
 
@@ -58,15 +60,29 @@ knxd_config_file: "templates/knxd.ini"
 
 #### Config parameter used in roles default ini template
 
-Knxd command line param to select driver (param -b).
-Possible values supported are `""` (empty string), `ipt` or `ip`
-```
-knxd_arg_driver: "ipt"
+List of Knxd command line params to configure different drivers.
+Each list entry describs one driver, the attribute "driver" must exist for each entry
+with the name of the driver (e.g. `ip`, `ipt`, `tpuart`).
+Currently only supported drivers are ip, ipt and tpuart with options.
+
+Example:
+```yaml
+knxd_arg_drivers:
+  - driver: "dummy"
+  - driver: "ip"
+    ipaddr: "224.2.3.4"      # (optional) translated to multicast-address used
+  - driver: "ipt"
+    ipaddr: "8.7.6.5"        # translated to ip tunneling gateways ip-address
+  - driver: "tpuart"
+    device: "/dev/bla/blub"  # name of local device
+    baudrate: 28800          # (optional) speed used talking to this device
 ```
 
-This is the ip address or broadcast address, depending on driver used above (ip|ipt)
+Other drivers will work when they do not need any driver specific options (like `dummy` driver).
+Default Value is:
 ```
-knxd_arg_ipgw: "192.168.1.8"
+knxd_arg_drivers:
+  - driver: "dummy"
 ```
 
 KNX/EIB address (param -e)
@@ -162,6 +178,22 @@ The optional version can be either an GitHub TAG name or a branch
     - hosts: servers
       roles:
          - { role: sseide.knxd, knxd_source_compile: true, knxd_source_version: "v0.14.25" }
+
+#### Example with two drivers: IPT and TPUART
+
+The following example configures two different drivers to use, one using
+IP-Tunneling to the remote ip address 192.168.8.8 and one USB-Device at /dev/ttyACM0 
+using the TPUART driver with a baud rate of 28.800.
+
+    - hosts: servers
+      roles:
+         - role: sseide.knxd
+           knxd_arg_drivers:
+             - driver "ipt"
+               ipaddr: "192.168.8.8"
+             - driver: "tpuart"
+               device: "/dev/ttyACM0"
+               baudrate: 28800  
 
 
 License

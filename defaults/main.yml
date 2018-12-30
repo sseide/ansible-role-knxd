@@ -21,10 +21,20 @@ knxd_config_file: "templates/knxd.ini"
 
 # config parameter used in default ini template
 #
-# param -b
-knxd_arg_driver: "ipt"
-# this is the ip address or broadcast address depending on driver used (ip|ipt)
-knxd_arg_ipgw: "192.168.1.8"
+# list of objects describing one driver each, attribute "driver " must exist for each entry with the name of the driver
+#
+# example:
+#  - driver: dummy
+#  - driver: ip
+#    ipaddr: "1.2.3.4"   # (optional) translated to multicast address used
+#  - driver: ipt
+#    ipaddr: "8.7.6.5"   # translated to ip tunneling gateway address
+#  - driver: tpuart
+#    device: /dev/bla/blub  # name of local device
+#    baudrate: 28800     # (optional) speed to use taking to this device
+knxd_arg_drivers:
+  - driver: "dummy"
+
 # EIB address (param -e)
 knxd_arg_eib_addr: "0.0.1"
 # EIB client addresses (param -E)
@@ -35,7 +45,7 @@ knxd_arg_local_socket: "/var/run/knx"
 knxd_arg_local_port: 6270
 
 # knxd connection string depends on local socket and local port configured
-knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}{% if knxd_arg_driver %}D.ipt{% endif %}"
+knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}{% for d in knxd_arg_drivers %}Driver.{{loop.index}},{% endfor %}"
 #
 # end knxd.ini template vars
 #
