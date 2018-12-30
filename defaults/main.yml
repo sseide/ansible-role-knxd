@@ -45,7 +45,7 @@ knxd_arg_local_socket: "/var/run/knx"
 knxd_arg_local_port: 6270
 
 # knxd connection string depends on local socket and local port configured
-knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}{% for d in knxd_arg_drivers %}Driver.{{loop.index}},{% endfor %}"
+knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}{% for d in knxd_arg_drivers %}Driver.{{ loop.index }},{% endfor %}"
 #
 # end knxd.ini template vars
 #

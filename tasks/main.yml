@@ -10,7 +10,7 @@
 
 - name: "Install ini file"
   template:
-    src: "{{knxd_config_file}}"
+    src: "{{ knxd_config_file }}"
     dest: "/etc/knxd.ini"
   notify: Restart knxd
 

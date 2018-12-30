@@ -9,18 +9,18 @@
 
 - name: "Install build tools prerequisites"
   apt:
-    name: "{{knxd_build_tools}}"
+    name: "{{ knxd_build_tools }}"
 
 - name: "Install build library prerequisites"
   apt:
-    name: "{{knxd_build_libs_dev}}"
+    name: "{{ knxd_build_libs_dev }}"
 
 - name: "Clone source into /usr/src"
   git:
     clone: true
     repo: "https://github.com/knxd/knxd.git"
     dest: "/usr/src/knxd"
-    version: "{{knxd_source_version}}"
+    version: "{{ knxd_source_version }}"
 
 - name: "Build debian packages from source"
   command: "dpkg-buildpackage -b -uc"
@@ -52,6 +52,6 @@
 
 - name: "Install new knxd packages"
   apt:
-    deb: "{{item}}"
+    deb: "{{ item }}"
     state: present
-  with_items: "{{knxd_deb_list}}"
+  with_items: "{{ knxd_deb_list }}"

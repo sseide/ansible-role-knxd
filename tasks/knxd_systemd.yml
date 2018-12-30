@@ -14,7 +14,7 @@
 - name: "Modify systemd socket file (unix socket)"
   lineinfile:
     path: "/lib/systemd/system/knxd.socket"
-    line: "ListenStream={{knxd_arg_local_socket}}"
+    line: "ListenStream={{ knxd_arg_local_socket }}"
     regexp: "^ListenStream=/.*$"
     state: present
   when: knxd_arg_local_socket != ""
@@ -22,7 +22,7 @@
 - name: "Modify systemd socket file (tcp port)"
   lineinfile:
     path: "/lib/systemd/system/knxd.socket"
-    line: "ListenStream={{knxd_arg_local_port}}"
+    line: "ListenStream={{ knxd_arg_local_port }}"
     regexp: "^ListenStream=\\d.*$"
     state: present
   when: knxd_arg_local_port != ""
