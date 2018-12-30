@@ -1,2 +1,27 @@
 ---
-# vars file for sseide.knxd
+# these are the tools needed to compile the source code
+knxd_build_tools:
+  - git-core
+  - build-essential
+  - debhelper
+  - autotools-dev
+  - autoconf
+  - automake
+  - libtool
+  - pkg-config
+  - dh-systemd
+
+# these are the libraries needed for knxd 0.14.25...
+# libsystemd-daemon-dev not needed on debian since stretch anymore
+# will be remove via task if necessary
+knxd_build_libs_dev:
+  - libusb-1.0-0-dev
+  - libsystemd-dev
+  - libsystemd-daemon-dev
+  - libev-dev
+  - cmake
+  # - basefiles
+  # - libfmt-dev
+  # - libfmt3-dev
+
+
