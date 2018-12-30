@@ -44,7 +44,7 @@ def test_knxd_service_file(host):
     assert f.group == 'root'
 
 
-# def test_nginx_is_running(host):
-#     nginx = host.service('nginx')
-#     assert nginx.is_running
-#     assert nginx.is_enabled
+def test_knxd_is_running(host):
+    knxd = host.service('knxd')
+    assert knxd.is_running
+    assert knxd.is_enabled

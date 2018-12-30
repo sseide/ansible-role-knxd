@@ -1,0 +1,9 @@
+---
+# this file contains all actions related to configure hosts with traditional init systems
+# like sysv / openrc
+
+- name: "Create new defaults file to pick up knxd.ini"
+  template:
+    src: "templates/knxd.defaults"
+    dest: "/etc/defaults/knxd"
+  notify: Restart knxd

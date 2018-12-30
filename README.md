@@ -22,16 +22,8 @@ If daemon is compiled from source all packages needed are installed by the role 
 Role Variables
 --------------
 
-TODO
-
-A description of the settable variables for this role should go here, including
-any variables that are in defaults/main.yml, vars/main.yml, and any variables
-that can/should be set via parameters to the role. Any variables that are read
-from other roles and/or the global scope (ie. hostvars, group vars, etc.) should
-be mentioned here as well.
-
 All values given for the role parameters are the default values as defined in
-`defaults/main.yml`.
+`defaults/main.yml` and `vars/main.yml`.
 
 ---
 
@@ -55,12 +47,6 @@ knxd_install_dev_package: false
 knxd_install_debug_package: false
 ```
 
-Path to the pid file (param -p) for knxd to create.
-This is used by monit template and knxd.ini template
-```
-knxd_pid_file: "/var/run/knxd.pid"
-```
-
 This role can either use its own template to create an knxd.ini file (default value)
 or you can set the path to your own template files to create a more sophisistcateds
 version of the ini file not possible with the default template.
@@ -70,7 +56,7 @@ below can be used to configure the knxd.ini file created
 knxd_config_file: "templates/knxd.ini"
 ```
 
-#### config parameter used in roles default ini template
+#### Config parameter used in roles default ini template
 
 Knxd command line param to select driver (param -b).
 Possible values supported are `""` (empty string), `ipt` or `ip`
@@ -95,7 +81,7 @@ knxd_arg_eib_client_addr: "0.0.2:8"
 
 Path to local listener socket
 ```
-knxd_arg_local_socket: "/tmp/eib"
+knxd_arg_local_socket: "/var/run/knx"
 ```
 
 Local tcp port to listen on
@@ -105,7 +91,7 @@ knxd_arg_local_port: 6270
 
 Template for knxd connection string, depends on local socket and port configured
 ```
-knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}D.ipt"
+knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}{% if knxd_arg_driver %}D.ipt{% endif %}"
 ```
 
 #### Other default variables

@@ -1,4 +1,4 @@
-check process knxd with pidfile {{knxd_pid_file}}
+check process knxd matching "knxd /etc/knxd.ini"
   group smarthome
   start program = "/usr/sbin/service knxd start"
   stop program  = "/usr/sbin/service knxd stop"

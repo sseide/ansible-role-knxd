@@ -14,19 +14,15 @@
     dest: "/etc/knxd.ini"
   notify: Restart knxd
 
-- name: "Configure systemd to pick up ini file"
-  lineinfile:
-    path: "/etc/knxd.conf"
-    line: "KNXD_OPTS=/etc/knxd.ini"
-    regexp: "^KNXD_OPTS=.*$"
-    state: present
-    create: true
-  register: knxd_systemd changed
-  notify: Restart knxd
+- include: knxd_systemd.yml
+  when: ansible_service_mgr == "systemd"
+
+- include: knxd_non_systemd.yml
+  when: ansible_service_mgr != "systemd"
 
 - name: "Configure monit"
   template:
     src: "templates/knxd.monit"
     dest: "/etc/monit/conf.d/knxd"
-  notify: Reload monit
   when: knxd_use_monit
+  notify: Reload monit

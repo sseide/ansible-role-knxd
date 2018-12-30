@@ -1,0 +1,34 @@
+---
+# this file contains all actions related to configure systemd controlled systems
+# they are not needed for "classic" sysv / openrc init style
+
+- name: "Configure systemd to pick up ini file"
+  lineinfile:
+    path: "/etc/knxd.conf"
+    line: "KNXD_OPTS=/etc/knxd.ini"
+    regexp: "^KNXD_OPTS=.*$"
+    state: present
+    create: true
+  notify: Restart knxd
+
+- name: "Modify systemd socket file (unix socket)"
+  lineinfile:
+    path: "/lib/systemd/system/knxd.socket"
+    line: "ListenStream={{knxd_arg_local_socket}}"
+    regexp: "^ListenStream=/.*$"
+    state: present
+  when: knxd_arg_local_socket != ""
+
+- name: "Modify systemd socket file (tcp port)"
+  lineinfile:
+    path: "/lib/systemd/system/knxd.socket"
+    line: "ListenStream={{knxd_arg_local_port}}"
+    regexp: "^ListenStream=\\d.*$"
+    state: present
+  when: knxd_arg_local_port != ""
+
+- name: "Reload SystemD"
+  systemd:
+    daemon_reload: true
+  changed_when: false
+

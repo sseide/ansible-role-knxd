@@ -8,7 +8,6 @@ knxd_source_version: "v0.14.25"
 
 # install 'monit' template for monitoring (http://www.tildeslash.com/monit)
 # 'monit' package from debian must already be installed
-# monit uses the knxd_pid_file param too!
 knxd_use_monit: false
 
 # install knxd-dev debian package or debug symbols too? defaults to false
@@ -19,10 +18,6 @@ knxd_install_debug_package: false
 # knxd_arg_ config parameters below accordingly or provide your own
 # path to knxd.ini file
 knxd_config_file: "templates/knxd.ini"
-
-# path to pid file (param -p)
-# this is used by monit template and knxd.ini template
-knxd_pid_file: "/var/run/knxd.pid"
 
 # config parameter used in default ini template
 #
@@ -35,12 +30,12 @@ knxd_arg_eib_addr: "0.0.1"
 # EIB client addresses (param -E)
 knxd_arg_eib_client_addr: "0.0.2:8"
 # path to local listener socket
-knxd_arg_local_socket: "/tmp/eib"
+knxd_arg_local_socket: "/var/run/knx"
 # local tcp port to listen on
 knxd_arg_local_port: 6270
 
-# knxd connection string depends on local socket and port configured
-knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}D.ipt"
+# knxd connection string depends on local socket and local port configured
+knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd_arg_local_port %}C.tcp,{% endif %}{% if knxd_arg_driver %}D.ipt{% endif %}"
 #
 # end knxd.ini template vars
 #
