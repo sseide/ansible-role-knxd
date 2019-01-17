@@ -9,7 +9,7 @@ KNXD source code can be found at https://github.com/knxd/knxd
 This role creates a knxd.ini file for usage with external KNX IP-Interfaces, IP-Routers
 or TPUART devices.
  
-For using KNXD with a `USB` driver or other usages you should use your own knxd.ini template file 
+For using KNXD with a `USB` driver or other usages you should provide your own knxd.ini template file 
 and not the one provided with this role. In this case just set the
 `knxd_config_file` variable to your own template.
 
@@ -18,7 +18,10 @@ Requirements
 ------------
 
 This role does not need any other dependencies than Ansible itself (and a KNX installation to speak with of course...).
+
 If daemon is compiled from source all packages needed are installed by the role itself.
+Compiling from source is only tested with latest 0.14.x releases, as knxd.ini file 
+used by this role was introduced then.
 
 
 Role Variables
@@ -195,6 +198,30 @@ using the TPUART driver with a baud rate of 28.800.
                device: "/dev/ttyACM0"
                baudrate: 28800  
 
+#### Example with custom knxd.ini file
+
+The following example does not use the knxd.ini template provided by this role.
+Here your own file (either plain file or jinja2 template) `files/myknxd.ini`
+is used to render the knxd.ini configuration file.
+
+    - hosts: servers
+      roles:
+         - role: sseide.knxd
+           knxd_config_file: 'files/myknxd.ini'
+
+Using your own file the following role variables are not used anymore:
+```yaml
+knxd_arg_drivers
+knxd_arg_eib_addr
+knxd_arg_eib_client_addr
+knxd_arg_connection
+```
+
+The following vars are only used if target system has systemd running:
+```yaml
+knxd_arg_local_socket
+knxd_arg_local_port
+```
 
 License
 -------
@@ -204,4 +231,4 @@ MIT
 Author Information
 ------------------
 
-This role was created in 2018 by Stefan Seide
+This role was created in 2018-2019 by Stefan Seide
