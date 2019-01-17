@@ -25,11 +25,12 @@ verifier:
   name: testinfra
   lint:
     name: flake8
-test:
-  sequence:
-    - destroy
-    - syntax
-    - create
-    - converge
-    # - idempotence  # ansible flags recompile of source as changed, ignore this
-    - verify
+molecule:
+  test:
+    sequence:
+      - destroy
+      - syntax
+      - create
+      - converge
+      # - idempotence  # ansible flags recompile of source as changed, ignore this
+      - verify
