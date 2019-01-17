@@ -1,10 +1,13 @@
 ---
 dependency:
   name: galaxy
+
 driver:
   name: docker
+
 lint:
   name: yamllint
+
 platforms:
   - name: instance
     image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian9}-ansible:latest"
@@ -13,24 +16,30 @@ platforms:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
     privileged: true
     pre_build_image: true
+
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
+
 scenario:
   name: default
+  test_sequence:
+    - lint
+    - destroy
+    - dependency
+    - syntax
+    - create
+    - prepare
+    - converge
+    # - idempotence  # ansible flags recompile of source as changed, ignore this
+    - side_effect
+    - verify
+    - destroy
+
 verifier:
   name: testinfra
   lint:
     name: flake8
-molecule:
-  test:
-    sequence:
-      - destroy
-      - syntax
-      - create
-      - converge
-      # - idempotence  # ansible flags recompile of source as changed, ignore this
-      - verify
