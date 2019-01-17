@@ -2,7 +2,7 @@
 # task to install knxd from existing debian repository
 - name: "set_fact: Create list of knxd packages for installation"
   set_fact:
-    knxd_deb_list: [ 'knxd', 'knxd-tools', 'knxd-dev' ]
+    knxd_deb_list: ['knxd', 'knxd-tools', 'knxd-dev']
 
 - name: "Check if dev package shall be installed too"
   set_fact:

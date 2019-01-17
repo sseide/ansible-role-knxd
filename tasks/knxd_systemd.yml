@@ -17,7 +17,7 @@
     line: "ListenStream={{ knxd_arg_local_socket }}"
     regexp: "^ListenStream=/.*$"
     state: present
-  when: knxd_arg_local_socket != ""
+  when: knxd_arg_local_socket != ''
 
 - name: "Modify systemd socket file (tcp port)"
   lineinfile:
@@ -25,7 +25,7 @@
     line: "ListenStream={{ knxd_arg_local_port }}"
     regexp: "^ListenStream=\\d.*$"
     state: present
-  when: knxd_arg_local_port != ""
+  when: knxd_arg_local_port
 
 - name: "Reload SystemD"
   systemd:

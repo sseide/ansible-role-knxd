@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: sseide
-  description: Install KNXD for debian.
+  description: Install KNXD for Debian.
   # company: your company (optional)
 
   # If the issue tracker for your role is not on github, uncomment the
