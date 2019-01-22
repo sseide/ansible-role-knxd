@@ -46,7 +46,7 @@
   find:
     path: "/usr/src"
     pattern: "{{knxd_deb_pattern}}"
-    recurse: no
+    recurse: false
   register: knxd_find_debs
 
 - name: "Create package list for installation"
