@@ -28,12 +28,25 @@
     chdir: "/usr/src/knxd"
   when: not knxd_skip_package_build
 
+# get build version from sources to create more exact find command below
+# control file must exist, exit with error otherwise
+- name: "Extract package version from debian control"
+  shell: "grep 'Version:' ./debian/knxd/DEBIAN/control"
+  args:
+    chdir: "/usr/src/knxd"
+  register: grep_version
+  changed_when: false
+
+- name: "Set package version pattern as fact"
+  set_fact:
+    knxd_deb_pattern: "knxd*{{ grep_version.stdout_lines[0] | replace('Version:','') | trim }}*.deb"
+
 # install local build packages
 - name: "Find newly build packages"
   find:
     path: "/usr/src"
-    pattern: "knxd*.deb"
-    recurse: false
+    pattern: "{{knxd_deb_pattern}}"
+    recurse: no
   register: knxd_find_debs
 
 - name: "Create package list for installation"
