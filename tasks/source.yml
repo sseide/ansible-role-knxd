@@ -15,7 +15,7 @@
   apt:
     name: "{{ knxd_build_libs_dev }}"
 
-- name: "Clone source into {{knxd_src_dir | dirname}}"
+- name: "Clone source into {{ knxd_src_dir | dirname }}"
   git:
     clone: true
     repo: "https://github.com/knxd/knxd.git"

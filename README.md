@@ -1,6 +1,11 @@
 Role "sseide.knxd"
 =========
 
+[![Ansible Role](https://img.shields.io/ansible/role/35936.svg)](https://img.shields.io/ansible/role/35936.svg)
+[![Build Status](https://travis-ci.org/sseide/ansible-role-knxd.svg?branch=master)](https://travis-ci.org/sseide/ansible-role-knxd)
+[![Version](https://img.shields.io/github/tag/sseide/ansible-role-knxd.svg)](https://img.shields.io/github/tag/sseide/ansible-role-knxd.svg)
+[![Code Quality](https://img.shields.io/ansible/quality/35936.svg)](https://img.shields.io/ansible/quality/35936.svg)
+
 This role installs KNXD daemon either from packages at an existing debian repository
 or by compiling the source code from git repo to build new debian packages.
 
