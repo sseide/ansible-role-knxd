@@ -23,3 +23,5 @@ knxd_build_libs_dev:
   # - basefiles
   # - libfmt-dev
   # - libfmt3-dev
+
+knxd_src_dir: /usr/src/knxd

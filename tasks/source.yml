@@ -15,37 +15,51 @@
   apt:
     name: "{{ knxd_build_libs_dev }}"
 
-- name: "Clone source into /usr/src"
+- name: "Clone source into {{knxd_src_dir | dirname}}"
   git:
     clone: true
     repo: "https://github.com/knxd/knxd.git"
-    dest: "/usr/src/knxd"
+    dest: "{{ knxd_src_dir }}"
     version: "{{ knxd_source_version }}"
-
-- name: "Build debian packages from source"
-  command: "dpkg-buildpackage -b -uc"
-  args:
-    chdir: "/usr/src/knxd"
-  when: not knxd_skip_package_build
 
 # get build version from sources to create more exact find command below
 # control file must exist, exit with error otherwise
 - name: "Extract package version from debian control"
-  shell: "grep 'Version:' ./debian/knxd/DEBIAN/control"
+  command: "grep -m 1 'knxd (.*)' ./debian/changelog"
   args:
-    chdir: "/usr/src/knxd"
+    chdir: "{{ knxd_src_dir }}"
   register: grep_version
   changed_when: false
 
 - name: "Set package version pattern as fact"
   set_fact:
-    knxd_deb_pattern: "knxd*{{ grep_version.stdout_lines[0] | replace('Version:','') | trim }}*.deb"
+    knxd_deb_pattern: "knxd*{{ grep_version.stdout_lines[0] | regex_replace('^.*\\((.*)\\).*$', '\\1') | trim }}*.deb"
+
+- debug:
+    var: knxd_deb_pattern
+
+# check if packages are already build if build can be skipped
+- name: "Check if packages are already build"
+  find:
+    path: "{{ knxd_src_dir | dirname }}"
+    pattern: "{{ knxd_deb_pattern }}"
+    recurse: false
+  when: not knxd_source_force_rebuild
+  register: knxd_find_debs
+
+
+- name: "Build debian packages from source"
+  command: "dpkg-buildpackage -b -uc"
+  args:
+    chdir: "{{ knxd_src_dir }}"
+  when: knxd_source_force_rebuild or knxd_find_debs.matched == 0
+
 
 # install local build packages
 - name: "Find newly build packages"
   find:
-    path: "/usr/src"
-    pattern: "{{knxd_deb_pattern}}"
+    path: "{{ knxd_src_dir | dirname }}"
+    pattern: "{{ knxd_deb_pattern }}"
     recurse: false
   register: knxd_find_debs
 

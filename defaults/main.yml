@@ -6,6 +6,9 @@ knxd_source_compile: false
 # e.g. "DEBIAN-0.14.27-2", "v0.14.25", ...
 knxd_source_version: "v0.14.25"
 
+# skip build process if final deb packages files already exists
+knxd_source_force_rebuild: false
+
 # install 'monit' template for monitoring (http://www.tildeslash.com/monit)
 # 'monit' package from debian must already be installed
 knxd_use_monit: false
@@ -49,8 +52,3 @@ knxd_arg_connection: "{% if knxd_arg_local_socket %}B.unix,{% endif %}{% if knxd
 #
 # end knxd.ini template vars
 #
-
-#### DEBUG ####
-# do all steps EXCEPT running dpkg-buildpackage to actually build the packages
-# for debug
-knxd_skip_package_build: false

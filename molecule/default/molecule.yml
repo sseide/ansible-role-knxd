@@ -34,7 +34,8 @@ scenario:
     - create
     - prepare
     - converge
-    # - idempotence  # ansible flags recompile of source as changed, ignore this
+    # ansible flags recompile of source as changed, idempotence only working if recompile not forced
+    - idempotence
     - side_effect
     - verify
     - destroy

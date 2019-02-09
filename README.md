@@ -32,12 +32,17 @@ All values given for the role parameters are the default values as defined in
 
 ---
 
-compile from github sources (true) or install from some debian repository via `apt-get install` (false).
+Compile from github sources (true) or install from some debian repository via `apt-get install` (false).
 If compile from source is true the explicit version to check out can be set too.
 The version name can be either a github tag or branch name, e.g. "DEBIAN-0.14.27-2", "v0.14.25", ...
 ```
 knxd_source_compile: false
 knxd_source_version: "v0.14.25"
+```
+If code is compiled from source this flag defines if already build deb packages shall be
+reused on additional runs or if code should be recompiled every time.
+```
+knxd_source_force_rebuild: false
 ```
 
 Set to true to install template for monitoring of the knxd server via 'Monit' (http://www.tildeslash.com/monit)
