@@ -28,6 +28,10 @@ If daemon is compiled from source all packages needed are installed by the role 
 Compiling from source is only tested with latest 0.14.x releases, as knxd.ini file 
 used by this role was introduced then.
 
+When packages shall be installed from existing debian repository please make shure
+package is available. `knxd` is part of Debian main repository starting with Debian 9 "Buster".
+For installation at older Debian releases please provide your own debian repository
+(e.g. with reprepro) and make shure this one is already added to the systems apt sources.  
 
 Role Variables
 --------------
@@ -39,10 +43,10 @@ All values given for the role parameters are the default values as defined in
 
 Compile from github sources (true) or install from some debian repository via `apt-get install` (false).
 If compile from source is true the explicit version to check out can be set too.
-The version name can be either a github tag or branch name, e.g. "DEBIAN-0.14.27-2", "v0.14.25", ...
+The version name can be either a github tag or branch name, e.g. "DEBIAN-0.14.29-3", "v0.14.25", ...
 ```
 knxd_source_compile: false
-knxd_source_version: "v0.14.25"
+knxd_source_version: "DEBIAN-0.14.29-3"
 ```
 If code is compiled from source this flag defines if already build deb packages shall be
 reused on additional runs or if code should be recompiled every time.

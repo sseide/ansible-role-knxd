@@ -13,11 +13,14 @@
 
 - name: "Install build library prerequisites"
   apt:
+    cache_valid_time: 3600
     name: "{{ knxd_build_libs_dev }}"
 
 - name: "Clone source into {{ knxd_src_dir | dirname }}"
   git:
     clone: true
+    force: true
+    update: true
     repo: "https://github.com/knxd/knxd.git"
     dest: "{{ knxd_src_dir }}"
     version: "{{ knxd_source_version }}"

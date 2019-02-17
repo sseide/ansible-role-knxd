@@ -11,6 +11,7 @@
 
 - name: "Install knxd packages from repo"
   apt:
+    cache_valid_time: 3600
     name: "{{ knxd_deb_list }}"
     state: present
   notify: Restart knxd

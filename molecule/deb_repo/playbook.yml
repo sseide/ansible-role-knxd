@@ -1,0 +1,42 @@
+---
+# this role checks installation via debian repository.
+# this works only at debian buster and newer as default, older releases do not have
+# a precompiled knxd package available.
+
+- name: Converge
+  hosts: all
+  pre_tasks:
+    # needed as long as no deb10 exists from geerlingguy
+    # add testing sources to apt and make it less preferred
+    - name: 'PRE: add buster apt sources'
+      lineinfile:
+        path: '/etc/apt/sources.list.d/buster.list'
+        line: 'deb http://ftp.de.debian.org/debian buster main'
+        state: present
+        create: true
+
+    - name: 'PRE: set buster preferences for apt'
+      blockinfile:
+        path: '/etc/apt/preferences.d/buster.pref'
+        state: present
+        create: true
+        block: |
+          Package: *
+          Pin: release a=testing
+          Pin-Priority: 200
+
+    # needed to test use_monit feature
+    - name: 'PRE: install monit for role test'
+      apt:
+        update_cache: true
+        # cache_valid_time: 3600
+        name: monit
+        state: present
+
+  roles:
+    - role: sseide.knxd
+      knxd_source_compile: false
+      knxd_use_monit: true
+      knxd_arg_drivers:
+        - driver: "dummy"
+        - driver: "ip"

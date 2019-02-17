@@ -3,8 +3,8 @@
 # compile from github sources?
 knxd_source_compile: false
 # version to checkout from git and compile package for, can be either a tag or branch name
-# e.g. "DEBIAN-0.14.27-2", "v0.14.25", ...
-knxd_source_version: "v0.14.25"
+# e.g. "DEBIAN-0.14.29-2", "v0.14.25", ...
+knxd_source_version: "DEBIAN-0.14.29-3"
 
 # skip build process if final deb packages files already exists
 knxd_source_force_rebuild: false
