@@ -34,8 +34,9 @@ scenario:
     - create
     - prepare
     - converge
-    # ansible flags recompile of source as changed, idempotence only working if recompile not forced
-    - idempotence
+    # ansible flags recompile of source as changed, idempotence only working if recompile not forced and
+    # and source files needs no modification (debian/control at jessie)
+    # - idempotence
     - side_effect
     - verify
     - destroy
