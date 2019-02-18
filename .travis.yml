@@ -5,9 +5,18 @@ services: docker
 env:
   global:
     - ROLE_NAME: knxd
-  matrix:
-    - MOLECULE_DISTRO: debian9
-    - MOLECULE_DISTRO: debian8
+
+matrix:
+  include:
+    - env:
+        - MOLECULE_DISTRO: debian8
+        - SCEENARIO: default
+    - env:
+        - MOLECULE_DISTRO: debian9
+        - SCEENARIO: default
+    - env:
+        - MOLECULE_DISTRO: debian9
+        - SCEENARIO: deb_repo
 
 install:
   # Install test dependencies.
@@ -21,7 +30,7 @@ before_script:
 
 script:
   # Run tests.
-  - molecule test --all
+  - molecule test --scenario-name $SCENARIO
 
 notifications:
   webhooks:
