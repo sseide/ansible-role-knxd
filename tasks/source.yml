@@ -50,6 +50,17 @@
   when: not knxd_source_force_rebuild
   register: knxd_find_debs
 
+# workaround for debian 8 jessie with newer knxd versions
+# debhelper was updated to version >=10 to allow inclusion into debian 10+
+# but jessie only provided debhelper 9
+# https://github.com/knxd/knxd/issues/390#issuecomment-464797589
+- name: "Change debhelper dependency to allow build on debian jessie (knxd issue #390)"
+  when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('9.0', '<'))
+  lineinfile:
+    path: "{{ knxd_src_dir }}/debian/control"
+    line: "\\1(>= 9)\\2"
+    regexp: "^(.* debhelper )\\(.*?\\)(.*)$"
+    backrefs: true
 
 - name: "Build debian packages from source"
   command: "dpkg-buildpackage -b -uc"
