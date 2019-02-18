@@ -10,13 +10,13 @@ matrix:
   include:
     - env:
         - MOLECULE_DISTRO: debian8
-        - SCEENARIO: default
+        - SCENARIO: default
     - env:
         - MOLECULE_DISTRO: debian9
-        - SCEENARIO: default
+        - SCENARIO: default
     - env:
         - MOLECULE_DISTRO: debian9
-        - SCEENARIO: deb_repo
+        - SCENARIO: deb_repo
 
 install:
   # Install test dependencies.
