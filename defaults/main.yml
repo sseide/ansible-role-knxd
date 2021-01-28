@@ -4,7 +4,8 @@
 knxd_source_compile: false
 # version to checkout from git and compile package for, can be either a tag or branch name
 # e.g. "DEBIAN-0.14.29-2", "v0.14.25", ...
-# attn: creating debian packages from source one of the "DEBIAN-..." tags should be used, not the tags with a version alone
+# ATTN:
+# creating debian packages from source one of the "DEBIAN-..." tags should be used, not the tags with version alone
 knxd_source_version: "DEBIAN-0.14.39-1"
 
 # skip build process if final deb packages files already exists
