@@ -18,9 +18,6 @@ matrix:
         - MOLECULE_DISTRO: debian10
         - SCENARIO: default
     - env:
-        - MOLECULE_DISTRO: debian9
-        - SCENARIO: deb_repo
-    - env:
         - MOLECULE_DISTRO: debian10
         - SCENARIO: deb_repo
 
