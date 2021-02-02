@@ -26,13 +26,14 @@ matrix:
 
 install:
   # Install test dependencies.
-  - pip install molecule[lint,docker] docker testinfra
+  - pip install molecule[lint,docker] docker pytest-testinfra
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
   - cd ../
   - mv ansible-role-$ROLE_NAME sseide.$ROLE_NAME
   - cd sseide.$ROLE_NAME
+  - echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_LOGIN" --password-stdin
 
 script:
   # Run tests.

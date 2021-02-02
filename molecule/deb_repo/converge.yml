@@ -8,7 +8,7 @@
   pre_tasks:
     # needed as long as debian version is below 10/buster as knxd is pre-packages on 10+ only
     # add testing sources to apt and make it less preferred
-    - name: 'PRE: add buster apt sources'
+    - name: 'PRE: add buster apt sources on debian 9'
       when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('10', '<'))
       lineinfile:
         path: '/etc/apt/sources.list.d/buster.list'
@@ -16,7 +16,7 @@
         state: present
         create: true
 
-    - name: 'PRE: set buster preferences for apt'
+    - name: 'PRE: set buster preferences for apt on debian 9'
       when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('10', '<'))
       blockinfile:
         path: '/etc/apt/preferences.d/buster.pref'
@@ -27,8 +27,29 @@
           Pin: release a=testing
           Pin-Priority: 200
 
+    - name: 'PRE: add buster backports apt sources on debian 10 (monit)'
+      when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('10', '='))
+      lineinfile:
+        path: '/etc/apt/sources.list.d/backports.list'
+        line: 'deb http://ftp.gwdg.de/pub/linux/debian/debian/ buster-backports main'
+        state: present
+        create: true
+
+    - name: 'PRE: set backport preferences for apt on debian 10'
+      when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('10', '='))
+      blockinfile:
+        path: '/etc/apt/preferences.d/backports.pref'
+        state: present
+        create: true
+        block: |
+          Package: *
+          Pin: release a=buster-backports
+          Pin-Priority: 450
+
     - name: Update apt cache.
       apt:
+        name: python-apt
+        state: present
         update_cache: true
         cache_valid_time: 600
       when: ansible_os_family == 'Debian'
