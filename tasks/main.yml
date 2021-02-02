@@ -12,6 +12,7 @@
   template:
     src: "{{ knxd_config_file }}"
     dest: "/etc/knxd.ini"
+    mode: "0644"
   notify: Restart knxd
 
 - include: knxd_systemd.yml
@@ -24,5 +25,6 @@
   template:
     src: "templates/knxd.monit"
     dest: "/etc/monit/conf.d/knxd"
+    mode: "0644"
   when: knxd_use_monit
   notify: Reload monit

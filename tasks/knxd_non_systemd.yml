@@ -6,4 +6,5 @@
   template:
     src: "templates/knxd.defaults"
     dest: "/etc/defaults/knxd"
+    mode: "0644"
   notify: Restart knxd
