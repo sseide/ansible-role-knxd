@@ -5,14 +5,17 @@ dependency:
 driver:
   name: docker
 
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+  flake8 molecule/
 
 platforms:
   - name: instance
     # need at least debian 10 Buster to test installation of knxd from repo
-    # workaround - use debian 9 and add buster repo to apt sources...
-    image: "geerlingguy/docker-debian9-ansible:latest"
+    # workaround for debian 9: add buster repo to apt sources...
+    image: "geerlingguy/docker-${MOLECULE_DISTRO:-debian10}-ansible:latest"
     command: ${MOLECULE_DOCKER_COMMAND:-""}
     volumes:
       - /sys/fs/cgroup:/sys/fs/cgroup:ro
@@ -21,13 +24,10 @@ platforms:
 
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
   playbooks:
-    converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 
 scenario:
-  name: deb_repo
   test_sequence:
     - lint
     - destroy
@@ -44,5 +44,3 @@ scenario:
 
 verifier:
   name: testinfra
-  lint:
-    name: flake8

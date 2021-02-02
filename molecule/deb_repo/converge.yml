@@ -6,9 +6,10 @@
 - name: Converge
   hosts: all
   pre_tasks:
-    # needed as long as no deb10 exists from geerlingguy
+    # needed as long as debian version is below 10/buster as knxd is pre-packages on 10+ only
     # add testing sources to apt and make it less preferred
     - name: 'PRE: add buster apt sources'
+      when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('10', '<'))
       lineinfile:
         path: '/etc/apt/sources.list.d/buster.list'
         line: 'deb http://ftp.de.debian.org/debian buster main'
@@ -16,6 +17,7 @@
         create: true
 
     - name: 'PRE: set buster preferences for apt'
+      when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('10', '<'))
       blockinfile:
         path: '/etc/apt/preferences.d/buster.pref'
         state: present
@@ -25,11 +27,16 @@
           Pin: release a=testing
           Pin-Priority: 200
 
+    - name: Update apt cache.
+      apt:
+        update_cache: true
+        cache_valid_time: 600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
+
     # needed to test use_monit feature
     - name: 'PRE: install monit for role test'
       apt:
-        update_cache: true
-        # cache_valid_time: 3600
         name: monit
         state: present
 

@@ -5,8 +5,11 @@ dependency:
 driver:
   name: docker
 
-lint:
-  name: yamllint
+lint: |
+  set -e
+  yamllint .
+  ansible-lint .
+  flake8 molecule/
 
 platforms:
   - name: instance
@@ -19,13 +22,10 @@ platforms:
 
 provisioner:
   name: ansible
-  lint:
-    name: ansible-lint
   playbooks:
-    converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
+    converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 
 scenario:
-  name: default
   test_sequence:
     - lint
     - destroy
@@ -43,5 +43,3 @@ scenario:
 
 verifier:
   name: testinfra
-  lint:
-    name: flake8

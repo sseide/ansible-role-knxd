@@ -15,12 +15,18 @@ matrix:
         - MOLECULE_DISTRO: debian9
         - SCENARIO: default
     - env:
+        - MOLECULE_DISTRO: debian10
+        - SCENARIO: default
+    - env:
         - MOLECULE_DISTRO: debian9
+        - SCENARIO: deb_repo
+    - env:
+        - MOLECULE_DISTRO: debian10
         - SCENARIO: deb_repo
 
 install:
   # Install test dependencies.
-  - pip install molecule docker
+  - pip install molecule[lint,docker] docker testinfra
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.

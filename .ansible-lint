@@ -4,3 +4,4 @@ skip_list:
   # will be there somewhere at ansible > 2.7.5
   - '602'
   - '405'
+  - '106'  # role name pattern - sseide.knxd is official galaxy name...

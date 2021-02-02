@@ -1,4 +1,5 @@
 .idea/
 *.iml
 molecule/**/*.pyc
+molecule-venv/
 .scannerwork
