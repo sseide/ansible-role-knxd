@@ -5,8 +5,9 @@ knxd_source_compile: false
 # version to checkout from git and compile package for, can be either a tag or branch name
 # e.g. "DEBIAN-0.14.29-2", "v0.14.25", ...
 # ATTN:
-# creating debian packages from source one of the "DEBIAN-..." tags should be used, not the tags with version alone
-knxd_source_version: "DEBIAN-0.14.39-1"
+# creating debian packages from source one of the "DEBIAN-..." or "debian/..." tags should be used
+# not the tags with version alone
+knxd_source_version: "debian/0.14.46-1"
 
 # skip build process if final deb packages files already exists
 knxd_source_force_rebuild: false
@@ -26,17 +27,25 @@ knxd_config_file: "templates/knxd.ini"
 
 # config parameter used in default ini template
 #
-# list of objects describing one driver each, attribute "driver " must exist for each entry with the name of the driver
+# list of objects describing one driver each:
+#   - attribute "driver" must exist for each entry with the name of the driver
+#   - optional attribute "filters", either as string with all filters or as list odf filters
+#   - other attributes depend on driver type (see examples below)
 #
 # example:
 #  - driver: dummy
 #  - driver: ip
 #    ipaddr: "1.2.3.4"   # (optional) translated to multicast address used
+#    filters: "single,retry"
 #  - driver: ipt
 #    ipaddr: "8.7.6.5"   # translated to ip tunneling gateway address
+#    filters:
+#      - single
+#      - retry
 #  - driver: tpuart
 #    device: /dev/bla/blub  # name of local device
 #    baudrate: 28800     # (optional) speed to use taking to this device
+#
 knxd_arg_drivers:
   - driver: "dummy"
 
