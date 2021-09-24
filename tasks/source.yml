@@ -65,6 +65,13 @@
     regexp: "^(.* debhelper )\\(.*?\\)(.*)$"
     backrefs: true
 
+# git checkout does not preserve timestamps, therefore following build might think it needs a bootstrap first
+- name: "Autoreconfigure after git checkout to allow build"
+  command: "autoreconf -f -i"
+  args:
+    chdir: "{{ knxd_src_dir }}"
+  when: knxd_source_force_rebuild or knxd_find_debs.matched == 0
+
 - name: "Build debian packages from source"
   command: "dpkg-buildpackage -b -uc"
   args:
