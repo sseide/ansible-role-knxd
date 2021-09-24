@@ -5,9 +5,6 @@
 - include: deb_repo.yml
   when: not knxd_source_compile
 
-- debug:
-    var: knxd_arg_connection
-
 - name: "Install ini file"
   template:
     src: "{{ knxd_config_file }}"

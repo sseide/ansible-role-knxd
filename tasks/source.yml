@@ -6,7 +6,6 @@
     knxd_build_libs_dev: "{{ knxd_build_libs_dev | reject('equalto', 'libsystemd-daemon-dev') | list }}"
   when: ansible_distribution == 'Debian' and (ansible_distribution_version is version('9', '>='))
 
-
 - name: "Install build tools prerequisites"
   apt:
     name: "{{ knxd_build_tools }}"
@@ -38,7 +37,8 @@
   set_fact:
     knxd_deb_pattern: "knxd*{{ grep_version.stdout_lines[0] | regex_replace('^.*\\((.*)\\).*$', '\\1') | trim }}*.deb"
 
-- debug:
+- name: "Debug output of generated knxd_deb_pattern"
+  debug:
     var: knxd_deb_pattern
 
 # check if packages are already build if build can be skipped

@@ -1,3 +1,4 @@
+---
 use_default_rules: true
 skip_list:
   # 602 broken for strings, may be fixed with ansible cr #51030 (https://github.com/ansible/ansible/pull/51030)
