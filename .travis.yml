@@ -27,8 +27,8 @@ matrix:
 install:
   # Install test dependencies, newer molecule version do not depend on ansible
   # must be installed separately
-  - apt-get -y install ansible
-  - pip install molecule[lint,docker] docker pytest-testinfra
+  #- apt-get -y install ansible
+  - pip install molecule[lint,docker,ansible] docker pytest-testinfra
 
 before_script:
   # Use actual Ansible Galaxy role name for the project directory.
