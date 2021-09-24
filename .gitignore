@@ -1,5 +1,6 @@
 .idea/
 *.iml
+play-test.yml
 molecule/**/*.pyc
 molecule-venv/
 .scannerwork

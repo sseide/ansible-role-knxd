@@ -78,9 +78,9 @@ knxd_config_file: "templates/knxd.ini"
 #### Config parameter used in roles default ini template
 
 List of Knxd command line params to configure different drivers.
-Each list entry describs one driver, the attribute "driver" must exist for each entry
+Each list entry describes one driver, the attribute "driver" must exist for each entry
 with the name of the driver (e.g. `ip`, `ipt`, `tpuart`).
-Currently only supported drivers are ip, ipt and tpuart with options.
+Only supported drivers are ip, ipt and tpuart with options and optional filters.
 
 Example:
 ```yaml
@@ -88,14 +88,19 @@ knxd_arg_drivers:
   - driver: "dummy"
   - driver: "ip"
     ipaddr: "224.2.3.4"      # (optional) translated to multicast-address used
+    filters: "single,retry"
   - driver: "ipt"
     ipaddr: "8.7.6.5"        # translated to ip tunneling gateways ip-address
+    filters:
+      - single
+      - retry
   - driver: "tpuart"
     device: "/dev/bla/blub"  # name of local device
     baudrate: 28800          # (optional) speed used talking to this device
 ```
 
 Other drivers will work when they do not need any driver specific options (like `dummy` driver).
+Only filters are supported than.
 Default Value is:
 ```
 knxd_arg_drivers:
@@ -208,9 +213,16 @@ using the TPUART driver with a baud rate of 28.800.
            knxd_arg_drivers:
              - driver "ipt"
                ipaddr: "192.168.8.8"
+               filters:
+                 - single
+                 - retry
              - driver: "tpuart"
                device: "/dev/ttyACM0"
-               baudrate: 28800  
+               baudrate: 28800
+               filters: "single,retry" 
+
+Optional filters can be assigned to all drivers. Filters can be added as a string written
+into the ini file as is or as a yaml list of filters
 
 #### Example with custom knxd.ini file
 

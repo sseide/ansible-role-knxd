@@ -54,3 +54,10 @@
       knxd_arg_drivers:
         - driver: "dummy"
         - driver: "ip"
+          filters:
+            - single
+            - retry
+        - driver: "tpuart"
+          filters: "single"
+        - driver: "tpuart"
+          baudrate: "56000"
