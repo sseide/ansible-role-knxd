@@ -9,9 +9,6 @@ env:
 matrix:
   include:
     - env:
-        - MOLECULE_DISTRO: debian8
-        - SCENARIO: default
-    - env:
         - MOLECULE_DISTRO: debian9
         - SCENARIO: default
     - env:
@@ -20,9 +17,17 @@ matrix:
     - env:
         - MOLECULE_DISTRO: debian10
         - SCENARIO: deb_repo
+    - env:
+        - MOLECULE_DISTRO: debian11
+        - SCENARIO: default
+    - env:
+        - MOLECULE_DISTRO: debian11
+        - SCENARIO: deb_repo
 
 install:
-  # Install test dependencies.
+  # Install test dependencies, newer molecule version do not depend on ansible
+  # must be installed separately
+  - apt-get -y install ansible
   - pip install molecule[lint,docker] docker pytest-testinfra
 
 before_script:

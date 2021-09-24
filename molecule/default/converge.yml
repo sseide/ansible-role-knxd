@@ -17,3 +17,10 @@
       knxd_arg_drivers:
         - driver: "dummy"
         - driver: "ip"
+          filters:
+            - single
+            - retry
+        - driver: "ip"
+          ipaddr: "192.168.8.8"
+          filters: "single"
+        - driver: "tpuart"

@@ -10,8 +10,8 @@ Running test:
 
 ### _default_
 
-  This one gets sorce from github, compiles and installs knxd
-  Tested against Debian 8 (jessie) and Debian 9 (stretch)
+  This one gets source from github, compiles and installs knxd
+  Tested against Debian 9 (stretch) and Debian 10 (buster) and Debian 11 (bullseye)
   
 ### _deb_repo_
   
@@ -23,8 +23,6 @@ Running test:
   Furthermore, this scenario tests integration into "monit" for monitoring
   the knxd daemon.  
   
-  _This one is not working right now due to some connection errors with buster image!_
-
 ## Installation / Setup of molecule
 
 * create python venv to install molecule (downloads entire ansible and so on)
